@@ -94,8 +94,6 @@ func imageHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	uploadImage(nil)
-
 	// Register handlers
 	http.HandleFunc(UPLOADPATH, newHandler)
 	http.HandleFunc(EDITPATH, editHandler)
@@ -103,5 +101,5 @@ func main() {
 	http.HandleFunc(IMAGEPATH, imageHandler)
 
 	// Serve forever
-	http.ListenAndServe(":8000", nil)
+	log.Fatal(http.ListenAndServe(":8000", nil))
 }
