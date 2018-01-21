@@ -53,6 +53,25 @@ textarea {
 				</form>
 			</div>
 		</div>
+		<div>
+			<h2>Variables you have access to</h2>
+			<textarea class="code" readonly rows="13">
+c = document.querySelector("#c");
+c.width = 480;
+c.height = 480;
+S = Math.sin;
+C = Math.cos;
+T = Math.tan;
+R = function(r,g,b,a) {
+	a = a === undefined ? 1 : a;
+	return "rgba("+(r|0)+","+(g|0)+","+(b|0)+","+a+")";
+};
+x = c.getContext("2d");
+p = x.getImageData(0, 0, 480, 480).data
+			</textarea>
+			<div>
+				Function u(t) is called ~60 times per second, and t is the elapsed time.
+			</div>
 	<script>
 function u(t) { }
 function init() {
