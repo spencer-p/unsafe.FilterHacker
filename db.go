@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -17,7 +18,7 @@ type Post struct {
 	Id    bson.ObjectId `bson:"_id,omitempty"`
 	Image []byte        `bson:"image"`
 	Code  string        `bson:"code"`
-	Date  int           `bson:"date"`
+	Date  int64         `bson:"date"`
 }
 
 func open() (*mgo.Session, error) {
@@ -40,7 +41,7 @@ func uploadImage(img []byte) (bson.ObjectId, error) {
 
 	// Insert the image into the posts collection
 	c := s.DB(DBNAME).C(COLLECTION)
-	err = c.Insert(&Post{Id: i, Image: img})
+	err = c.Insert(&Post{Id: i, Image: img, Date: time.Now().Unix()})
 	if err != nil {
 		return "", err
 	}
