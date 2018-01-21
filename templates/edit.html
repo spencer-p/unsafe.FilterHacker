@@ -1,6 +1,107 @@
 <html>
+	<head>
+<style>
+#post {
+	display: flex;
+	flex-direction: row;
+	min-width: calc(2*480px);
+	min-height: 480px;
+}
+#editor, #editor-form {
+	background-color: lightslategrey;
+	display: flex;
+	flex-direction: column;
+	width: 480px;
+	height: 480px;
+}
+#buttonbox {
+	display: flex;
+	justify-content: flex-end;
+}
+textarea {
+	width: 100%;
+	flex-grow: 1;
+	border: none;
+}
+.code {
+	background-color: lightslategrey;
+	color: whitesmoke;
+	margin: 0px;
+	padding: 15px;
+}
+#status {
+	padding-right: 10px;
+}
+</style>
+	</head>
 	<body>
+		<img style="width:0px;height:0px;display:none;" src="/img/{{.}}" id="preload-img" onload="init()"></img>
 		<h1>Edit page</h1>
-		<img src="/img/{{.}}"></img>
+		<div id="post">
+			<canvas id="c"></canvas>
+			<div id="editor">
+				<form method="post" id="editor-form">
+					<div class="code"><code>function u(t) {</code></div>
+					<input type="hidden" name="id" value="{{.}}"/>
+					<textarea id="code" class="code" name="code" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+					<div class="code"><code>}</code></div>
+					<div id="buttonbox">
+						<span id="status" style="color:white;"></span>
+						<button onclick="updateCode()">Update</button>
+						<input type="submit" value="Finish!"/>
+					</div>
+				</form>
+			</div>
+		</div>
+	<script>
+function u(t) { }
+function init() {
+	// much of this is borrowed from dwitter.net
+	reset()
+	function loop() {
+		requestAnimationFrame(loop);
+		time = frame/60;
+		if(time * 60 | 0 == frame - 1){
+			time += 0.000001;
+		}
+		frame++;
+		try {
+			x.drawImage(document.getElementById("preload-img"), 0, 0)
+			u(time);
+		} catch (e) {
+			console.log(e);
+			throw e;
+		}
+	}
+	loop();
+}
+function updateCode() {
+	try {
+		eval("u = function(t){"+document.getElementById("code").value+"\n};");
+	} catch (e) {
+		u = function(t){
+			throw e;
+		};
+		throw e;
+	}
+	reset();
+}
+function reset(){
+	c = document.querySelector("#c");
+	c.width = 480;
+	c.height = 480;
+	S = Math.sin;
+	C = Math.cos;
+	T = Math.tan;
+	R = function(r,g,b,a) {
+		a = a === undefined ? 1 : a;
+		return "rgba("+(r|0)+","+(g|0)+","+(b|0)+","+a+")";
+	};
+	x = c.getContext("2d");
+	time = 0;
+	frame = 0;
+	x.drawImage(document.getElementById("preload-img"), 0, 0)
+}
+	</script>
 	</body>
 </html>
