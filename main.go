@@ -48,9 +48,16 @@ func newHandler(w http.ResponseWriter, r *http.Request) {
 
 		// TODO make sure that it's an image (handler.Header)
 		_ = handler
-		bytes, err := ioutil.ReadAll(file)
+		rawBytes, err := ioutil.ReadAll(file)
 		if err != nil {
 			log.Println("Could not read the image:", err)
+			return
+		}
+
+		// Crop it
+		bytes, err := cropBytesToBytes(rawBytes)
+		if err != nil {
+			log.Println("Could not crop the image:", err)
 			return
 		}
 
