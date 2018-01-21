@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	DBURL = "localhost:27017"
-	DBNAME = "test"
+	DBURL      = "localhost:27017"
+	DBNAME     = "test"
 	COLLECTION = "posts"
 )
 

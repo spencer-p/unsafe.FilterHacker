@@ -1,9 +1,9 @@
 package main
 
 import (
-	"io/ioutil"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -17,7 +17,7 @@ const (
 	UPLOADPATH = "/new/"
 	EDITPATH   = "/edit/"
 	VIEWPATH   = "/view/"
-	IMAGEPATH = "/img/"
+	IMAGEPATH  = "/img/"
 )
 
 var templates = template.Must(template.ParseFiles(
