@@ -51,7 +51,7 @@ func uploadImage(img []byte) (bson.ObjectId, error) {
 	return i, nil
 }
 
-func updateCode(id, code string) (error) {
+func updateCode(id, code string) error {
 	s, err := open()
 	if err != nil {
 		return err
