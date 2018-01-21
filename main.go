@@ -97,7 +97,14 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 
 // viewHandler displays a finished image+code combo.
 func viewHandler(w http.ResponseWriter, r *http.Request) {
-	err := templates.ExecuteTemplate(w, "view.html", nil)
+	idStr := r.URL.Path[len(VIEWPATH):]
+	post, err := getPost(idStr)
+	if err != nil {
+		fmt.Fprintf(w, "An error occurred. TODO: 500 this")
+		log.Print("Error: ", err)
+		return
+	}
+	err = templates.ExecuteTemplate(w, "view.html", post)
 	if err != nil {
 		fmt.Fprintf(w, "An error occurred. TODO: 500 this")
 		log.Print("Error: ", err)
