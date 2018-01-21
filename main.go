@@ -36,6 +36,7 @@ func newHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Fprintf(w, "An error occurred. TODO: 500 this")
 			log.Print("Error: ", err)
+			return
 		}
 	} else if r.Method == "POST" {
 		r.ParseMultipartForm(32 << 20)
@@ -108,6 +109,7 @@ func viewHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprintf(w, "An error occurred. TODO: 500 this")
 		log.Print("Error: ", err)
+		return
 	}
 }
 
@@ -116,6 +118,7 @@ func imageHandler(w http.ResponseWriter, r *http.Request) {
 	img, err := getImage(idStr)
 	if err != nil {
 		log.Println("Could not fetch image:", err)
+		return
 	}
 	w.Write(img)
 }
