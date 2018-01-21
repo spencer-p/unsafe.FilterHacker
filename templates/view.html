@@ -91,6 +91,7 @@ function reset(){
 	time = 0;
 	frame = 0;
 	x.drawImage(document.getElementById("preload-img"), 0, 0)
+	p = x.getImageData(0, 0, 480, 480).data
 }
 updateCode("{{.Code}}");
 	</script>
