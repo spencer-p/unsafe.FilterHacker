@@ -45,7 +45,7 @@ func uploadImage(img []byte) (bson.ObjectId, error) {
 		return "", err
 	}
 
-	log.Print("Successfully inserted ", i.Hex())
+	log.Println("Successfully inserted", i.Hex())
 
 	return i, nil
 }
