@@ -74,11 +74,24 @@ func newHandler(w http.ResponseWriter, r *http.Request) {
 // editHandler serves the page on which users write code to filter the image they
 // previously uploaded. It allows them to submit code matching their image.
 func editHandler(w http.ResponseWriter, r *http.Request) {
-	idStr := r.URL.Path[len(EDITPATH):]
-	err := templates.ExecuteTemplate(w, "edit.html", idStr)
-	if err != nil {
-		fmt.Fprintf(w, "An error occurred. TODO: 500 this")
-		log.Print("Error: ", err)
+	if r.Method == "GET" {
+		idStr := r.URL.Path[len(EDITPATH):]
+		err := templates.ExecuteTemplate(w, "edit.html", idStr)
+		if err != nil {
+			fmt.Fprintf(w, "An error occurred. TODO: 500 this")
+			log.Print("Error: ", err)
+			return
+		}
+	} else if r.Method == "POST" {
+		id := r.FormValue("id")
+		code := r.FormValue("code")
+		err := updateCode(id, code)
+		if err != nil {
+			log.Println("Could not update code:", err)
+			return
+		}
+
+		http.Redirect(w, r, VIEWPATH+id, http.StatusFound)
 	}
 }
 

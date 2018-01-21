@@ -50,7 +50,34 @@ func uploadImage(img []byte) (bson.ObjectId, error) {
 	return i, nil
 }
 
-func getImage(id string) ([]byte, error) {
+func updateCode(id, code string) (error) {
+	s, err := open()
+	if err != nil {
+		return err
+	}
+	defer s.Close()
+
+	c := s.DB(DBNAME).C(COLLECTION)
+
+	// Get existing post and change it
+	post, err := getPost(id)
+	if err != nil {
+		return err
+	}
+	post.Code = code
+
+	// Push that update
+	_, err = c.UpsertId(bson.ObjectIdHex(id), post)
+	if err != nil {
+		return err
+	}
+
+	log.Println("Successfully updated code for", id)
+
+	return nil
+}
+
+func getPost(id string) (*Post, error) {
 	s, err := open()
 	if err != nil {
 		return nil, err
@@ -65,5 +92,13 @@ func getImage(id string) ([]byte, error) {
 		return nil, err
 	}
 
-	return result.Image, nil
+	return &result, nil
+}
+
+func getImage(id string) ([]byte, error) {
+	post, err := getPost(id)
+	if err != nil {
+		return nil, err
+	}
+	return post.Image, err
 }
